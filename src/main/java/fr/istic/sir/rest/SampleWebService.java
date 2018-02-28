@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 
 import jpa.*;
 
-@Path("/hello")
+@Path("/api")
 public class SampleWebService {
 	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("mysql");
 	EntityManager manager = factory.createEntityManager();
@@ -54,7 +54,7 @@ public class SampleWebService {
     @POST
     @Path("/home")
     @Produces(MediaType.TEXT_HTML)
-    public String addHome(@QueryParam("taille") int taille, @QueryParam("nbChambres") int nbChambres, @QueryParam("id") int idPerson) {
+    public String addHome(@QueryParam("taille") int taille, @QueryParam("nbChambres") int nbChambres, @QueryParam("idPerson") int idPerson) {
     	Home h = new Home();
     	h.setTaille(taille);
     	h.setNbChambres(nbChambres);
