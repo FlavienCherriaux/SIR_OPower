@@ -13,6 +13,7 @@ L'URL de base pour utiliser l'API est la suivante : ``` http://localhost:8181/op
 
 ### Méthodes
 ``` /home ``` (GET) : retourne la liste des maisons au format JSON
+
 ``` /home/:id ``` (GET) : retourne la maison possédant l'identifiant :id au format JSON
 ``` /home ``` (POST) : ajoute une maison. Nécessite 3 paramètres : taille (taille de la maison), nbChambres (nombre de chambres), idPerson (identifiant de la personne possédant la maison)
 ``` /home/:id ``` (DELETE) : supprime la maison possédant l'identifiant :id
