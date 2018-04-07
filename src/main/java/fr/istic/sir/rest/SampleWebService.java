@@ -6,19 +6,19 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import jpa.*;
 
 @Path("/api")
 public class SampleWebService {
-	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("mysql");
+	EntityManagerFactory factory = Persistence.createEntityManagerFactory("mysql");
 	EntityManager manager = factory.createEntityManager();
 	
     @GET
@@ -54,11 +54,14 @@ public class SampleWebService {
     @POST
     @Path("/home")
     @Produces(MediaType.TEXT_HTML)
-    public String addHome(@QueryParam("taille") int taille, @QueryParam("nbChambres") int nbChambres, @QueryParam("idPerson") int idPerson) {
+    public String addHome(@FormParam("taille") int taille, @FormParam("nbChambres") int nbChambres, @FormParam("idPerson") int idPerson) {
     	Home h = new Home();
     	h.setTaille(taille);
     	h.setNbChambres(nbChambres);
     	h.setPerson(manager.find(Person.class, idPerson));
+    	manager.getTransaction().begin();
+    	manager.persist(h);
+    	manager.getTransaction().commit();
     	return "Add OK";
     }
     
@@ -104,11 +107,14 @@ public class SampleWebService {
     @POST
     @Path("/person")
     @Produces(MediaType.TEXT_HTML)
-    public String addPerson(@QueryParam("nom") String nom, @QueryParam("prenom") String prenom, @QueryParam("mail") String mail) {
+    public String addPerson(@FormParam("nom") String nom, @FormParam("prenom") String prenom, @FormParam("mail") String mail) {
     	Person p = new Person();
     	p.setNom(nom);
     	p.setPrenom(prenom);
     	p.setMail(mail);
+    	manager.getTransaction().begin();
+    	manager.persist(p);
+    	manager.getTransaction().commit();
     	return "Add OK";
     }
     
@@ -154,20 +160,26 @@ public class SampleWebService {
     @POST
     @Path("/device/electronic")
     @Produces(MediaType.TEXT_HTML)
-    public String addElectronicDevice(@QueryParam("conso") float conso, @QueryParam("idHome") int idHome) {
+    public String addElectronicDevice(@FormParam("conso") float conso, @FormParam("idHome") int idHome) {
     	ElectronicDevice d = new ElectronicDevice();
     	d.setConso(conso);
     	d.setHome(manager.find(Home.class, idHome));
+    	manager.getTransaction().begin();
+    	manager.persist(d);
+    	manager.getTransaction().commit();
     	return "Add OK";
     }
     
     @POST
     @Path("/device/heater")
     @Produces(MediaType.TEXT_HTML)
-    public String addHeater(@QueryParam("power") int power, @QueryParam("idHome") int idHome) {
+    public String addHeater(@FormParam("power") int power, @FormParam("idHome") int idHome) {
     	Heater d = new Heater();
     	d.setPower(power);
     	d.setHome(manager.find(Home.class, idHome));
+    	manager.getTransaction().begin();
+    	manager.persist(d);
+    	manager.getTransaction().commit();
     	return "Add OK";
     }
     
